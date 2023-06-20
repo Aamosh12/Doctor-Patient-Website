@@ -1,0 +1,200 @@
+#main {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+
+}
+#background {
+  background-image: linear-gradient(
+    58.2deg,
+    rgba(40, 91, 212, 0.73) -3%,
+    rgba(171, 53, 163, 0.45) 49.3%,
+    rgba(255, 204, 112, 0.37) 97.7%
+  );
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  z-index: -1; /* Sends the background backward*/
+}
+#nav {
+  height: 2px;
+}
+
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  opacity: 75%;
+}
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+}
+.nav-item {
+  margin-left: 100px;
+}
+.nav-link {
+  color: #dde6ed;
+  font-weight: italic;
+  transition: 0.5s ease-in-out;
+  font-family: Montserrat;
+  font-size: 17px;
+}
+.navbar-brand {
+  margin-bottom: 5px;
+}
+#index-login {
+  transition: 0.5s ease-in-out;
+  border-color: #0d0f11;
+  color: #dde6ed;
+  font-family: Montserrat;
+}
+#index-login:hover {
+  background-color: #dde6ed;
+  color: #27374d;
+  border-color: #27374d;
+}
+#loginDiv{
+    display: none;
+}
+#login-form {
+  width: 380px;
+  height: 450px;
+  position: relative;
+  margin: 7% auto;
+  background: #9db2bf;
+  padding: 10px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.button-form {
+  width: 220px;
+  margin: 35px auto;
+  position: relative;
+  box-shadow: 0 0 20px 9px #5f6e78;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: row;
+}
+#btn {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 110px;
+  height: 100%;
+  background: #3d586d;
+  border-radius: 30px;
+  transition: 0.5s;
+}
+.top-btn {
+  padding: 10px 29px;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  outline: none;
+  position: relative;
+  color: #dde6ed;
+}
+.input-group-login {
+  top: 100px;
+  width: 280px;
+  transform: 0.5s;
+  margin-left: 35px;
+  position: absolute;
+}
+.input-group-register {
+  top: 70px;
+  position: absolute;
+  width: 280px;
+  transition: 0.5s;
+  margin-left: 35px;
+}
+.input-field {
+  width: 100%;
+  padding: 10px 0;
+  margin: 5px 0;
+  border-left: 0;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid #526d82;
+  outline: none;
+  background: transparent;
+}
+.submit-btn {
+  width: 85%;
+  padding: 10px 30px;
+  cursor: pointer;
+  display: block;
+  margin: auto;
+  background: #27374d;
+  border: 0;
+  outline: none;
+  border-radius: 30px;
+  color: #dde6ed;
+}
+.check-box {
+  margin: 30px 10px 34px 0;
+}
+#agreeText {
+  color: #777;
+  font-size: 16px;
+  bottom: 68px;
+  /* position: absolute; */
+  margin-bottom: 7px;
+}
+#login {
+  right: -30px;
+}
+#login input {
+  color: whitesmoke;
+  font-size: 12;
+}
+#register input {
+  color: whitesmoke;
+  font-size: 12;
+}
+#register {
+  left: 450px;
+}
+#xmark {
+  top: 0;
+  left: 0;
+  position: absolute;
+  background: #526d82;
+  height: 50px;
+  width: 40px;
+  border-radius: 9px;
+  left: -5px;
+  top: -5px;
+  z-index: 1;
+}
+#cross {
+  color: aliceblue;
+  position: relative;
+  z-index: 2;
+  font-size: 25px;
+}
+.radio-box {
+  display: inline-flex;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+#scroll-form{
+  height: 185px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 325px;
+  bottom: 10px;
+}
+#field_patient{
+  display: none;
+}
