@@ -3,15 +3,9 @@
   height: auto;
   display: flex;
   flex-direction: column;
-
 }
 #background {
-  background-image: linear-gradient(
-    58.2deg,
-    rgba(40, 91, 212, 0.73) -3%,
-    rgba(171, 53, 163, 0.45) 49.3%,
-    rgba(255, 204, 112, 0.37) 97.7%
-  );
+  background-image: url("../images/background.png");
   position: fixed;
   top: 0;
   left: 0;
@@ -61,8 +55,8 @@
   color: #27374d;
   border-color: #27374d;
 }
-#loginDiv{
-    display: none;
+#loginDiv {
+  display: none;
 }
 #login-form {
   width: 380px;
@@ -188,13 +182,19 @@
   margin-right: 10px;
   border-radius: 5px;
 }
-#scroll-form{
+#scroll-form {
   height: 185px;
   overflow-x: hidden;
   overflow-y: scroll;
   width: 325px;
   bottom: 10px;
 }
-#field_patient{
+#field_patient {
   display: none;
+}
+.message-box {
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-top: 10px;
 }
