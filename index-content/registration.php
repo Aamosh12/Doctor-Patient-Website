@@ -12,16 +12,21 @@ if (isset($_POST['register-doctor'])) {
     $daddress = $_POST['daddress'];
     $dpassword = $_POST['dpassword'];
     $dcpassword = $_POST['dcpassword'];
-    if ($dpassword !== $dcpassword) {
-        echo "<script>document.getElementById('password_match_error').style.display = 'block';</script>";
-    }
-    $sql = "INSERT INTO doctor VALUES ('', '$name', '$email', '$phone', '$nmc', '$degree', '$designation', '$specialist', '$daddress', '$dpassword' )";
+    $confirm = false;
+    if ($dpassword === $dcpassword) {
+        $sql = "INSERT INTO doctor VALUES ('', '$name', '$email', '$phone', '$nmc', '$degree', '$designation', '$specialist', '$daddress', '$dpassword' )";
     if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
+        echo "<script>document.getElementById('message-box').style.display = 'block';</script>";
+        header("location: ../index.php");
+        exit;
     } else {
         echo "Error: " . $sql . "<br>";
     }
-
+    }
+    else{
+        echo "invalid";
+    }
+ 
     $conn->close();
 }
 ?>
@@ -37,7 +42,7 @@ if (isset($_POST['register-doctor'])) {
     </div><br>
     <div id="scroll-form">
         <div id="field_doctor">
-            <form action="" id="register0" class="input-group-register0" method="post">
+            <form action="" id="register0" class="input-group-register0" method="post" onsubmit="return validate()">
                 <input type="text" class="input-field" placeholder="Name" name="dname" required>
                 <input type="email" class="input-field" placeholder="Email" name="demail" required>
                 <input type="tel" class="input-field" placeholder="Phone No" name="dphone" required>
@@ -46,10 +51,13 @@ if (isset($_POST['register-doctor'])) {
                 <input type="text" class="input-field" placeholder="Designation" name="designation" required>
                 <input type="text" class="input-field" placeholder="Specialist" name="specialist" required>
                 <input type="text" class="input-field" placeholder="Address" name="daddress" required>
-                <input type="password" class="input-field" placeholder="Password" name="dpassword" required>
-                <input type="password" class="input-field" placeholder="Confirm Password" name="dcpassword" required>
-                <p id="password_match_error" class="--bs-danger-text-emphasis" style="display: none;">Passwords do not match.</p>
+                <input type="password" class="input-field" placeholder="Password" name="dpassword" id="dpassword" required>
+                <input type="password" class="input-field" placeholder="Confirm Password" name="dcpassword" id="dcpassword" required>
+                <p id="password_match_error" class="text-danger"></p>
                 <input type="checkbox" class="check-box" required><span id="agreeText">I agree to the terms and conditions.</span>
+                <div class="message-box" style="display: none;">
+                    <p id="message">Registration Success</p>
+                </div>
                 <button type="submit" class="submit-btn" name="register-doctor" value="register-doctor">Register</button>
             </form>
         </div>
@@ -71,3 +79,17 @@ if (isset($_POST['register-doctor'])) {
         </div>
     </div>
 </div>
+<script>
+     function validate() {
+      var password = document.getElementById("dpassword").value;
+      var confirmPassword = document.getElementById("dcpassword").value;
+
+      if (password !== confirmPassword) {
+        document.getElementById("password_match_error").textContent = "Passwords do not match!";
+        return false; // Return false to prevent form submission
+      }
+
+      // Passwords match, continue with form submission
+      return true;
+    }
+</script>
