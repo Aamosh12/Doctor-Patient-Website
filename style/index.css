@@ -6,6 +6,7 @@
 }
 #background {
   background-image: url("../images/background.png");
+  filter: brightness(75%);
   position: fixed;
   top: 0;
   left: 0;
@@ -60,7 +61,7 @@
 }
 #login-form {
   width: 380px;
-  height: 450px;
+  height: 420px;
   position: relative;
   margin: 7% auto;
   background: #9db2bf;
@@ -183,7 +184,7 @@
   border-radius: 5px;
 }
 #scroll-form {
-  height: 185px;
+  height: 160px;
   overflow-x: hidden;
   overflow-y: scroll;
   width: 325px;
@@ -197,4 +198,18 @@
   background-color: #f9f9f9;
   padding: 10px;
   margin-top: 10px;
+}
+
+#main_content
+{
+  margin-top: 15%;
+  margin-left: 80px;
+}
+#main_content *{
+  font-family: 'Poppins', sans-serif;
+}
+#content-title{
+  font-size: 70px;
+  color: #27374d;
+  font-weight: bold;
 }
