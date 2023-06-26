@@ -30,7 +30,15 @@
           </ul>
         </li>
       </ul>
-        <button class="btn btn-outline" type="button" id="index-login"  onclick="document.getElementById('loginDiv').style.display='block'"><i class="bi bi-person-circle" id="user-icon" style="margin-bottom: 5px">      </i>Login</button>
+        <button class="btn btn-outline" type="button" id="index-login"  onclick="showLogin()"><i class="bi bi-person-circle" id="user-icon" style="margin-bottom: 5px">      </i>Login</button>
     </div>
   </div>
 </nav>
+<script>
+  function showLogin(){
+    document.getElementById('loginDiv').style.overflow = 'hidden';
+    document.getElementById('loginDiv').style.display='block';
+    document.getElementById('main_content').style.display='none';
+    document.getElementById('content').style.filter = 'blur(50%)';
+  }
+</script>
