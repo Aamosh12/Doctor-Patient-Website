@@ -4,29 +4,29 @@ require './actions/Connection.php';
 if (isset($_POST['register-doctor'])) {
     $name = $_POST['dname'];
     $email = $_POST['demail'];
+    $address = $_POST['daddress'];
     $phone = $_POST['dphone'];
-    $nmc = $_POST['nmc'];
+    $username = $_POST['dusername'];
     $degree = $_POST['degree'];
-    $designation = $_POST['designation'];
-    $specialist = $_POST['specialist'];
-    $daddress = $_POST['daddress'];
-    $dpassword = $_POST['dpassword'];
+    $specialization = $_POST['spec'];
+    $nmc = $_POST['nmc'];
+    $experience = $_POST['experience'];
+    $password = $_POST['dpassword'];
     $dcpassword = $_POST['dcpassword'];
     $confirm = false;
-    if ($dpassword === $dcpassword) {
-        $sql = "INSERT INTO doctor VALUES ('', '$name', '$email', '$phone', '$nmc', '$degree', '$designation', '$specialist', '$daddress', '$dpassword' )";
-    if ($conn->query($sql) === TRUE) {
-        echo "<script>document.getElementById('message-box').style.display = 'block';</script>";
-        header("location: ../index.php");
-        exit;
+    
+    $user_sql = "INSERT INTO user VALUES ('', '$name', '$email', '$address', '$username', '$password', '$phone', '1' )";
+
+    if ($conn->query($user_sql) === TRUE) {
+        $select = "SELECT id FROM user WHERE Username='$username'";
+        $userid= $conn->query($select)->fetch_assoc()['id'];
+        $sql = "INSERT INTO doctor VALUES ('$userid','$degree', '$specialization', '$nmc', '$experience')";
+        if(!$conn->query($sql)){
+            die('Error: '.$conn->error);
+        }
     } else {
         echo "Error: " . $sql . "<br>";
-    }
-    }
-    else{
-        echo "invalid";
-    }
- 
+    } 
     $conn->close();
 }
 ?>
@@ -45,12 +45,13 @@ if (isset($_POST['register-doctor'])) {
             <form action="" id="register0" class="input-group-register0" method="post" onsubmit="return validate()">
                 <input type="text" class="input-field" placeholder="Name" name="dname" required>
                 <input type="email" class="input-field" placeholder="Email" name="demail" required>
-                <input type="tel" class="input-field" placeholder="Phone No" name="dphone" required>
-                <input type="tel" class="input-field" placeholder="NMC No" name="nmc" required>
-                <input type="text" class="input-field" placeholder="Degree" name="degree" required>
-                <input type="text" class="input-field" placeholder="Designation" name="designation" required>
-                <input type="text" class="input-field" placeholder="Specialist" name="specialist" required>
                 <input type="text" class="input-field" placeholder="Address" name="daddress" required>
+                <input type="tel" class="input-field" placeholder="Phone Number" name="dphone" required>
+                <input type="text" class="input-field" placeholder="Username" name="dusername" required>
+                <input type="text" class="input-field" placeholder="Your Degree Here" name="degree" required>
+                <input type="text" class="input-field" placeholder="Specialization" name="spec" required>
+                <input type="tel" class="input-field" placeholder="NMC No." name="nmc" required>
+                <input type="text" class="input-field" placeholder="Experience here" name="experience" required>
                 <input type="password" class="input-field" placeholder="Password" name="dpassword" id="dpassword" required>
                 <input type="password" class="input-field" placeholder="Confirm Password" name="dcpassword" id="dcpassword" required>
                 <p id="password_match_error" class="text-danger"></p>
@@ -71,6 +72,7 @@ if (isset($_POST['register-doctor'])) {
                 <input type="email" class="input-field" placeholder="Email" required>
                 <input type="text" class="input-field" placeholder="Address" required>
                 <input type="tel" class="input-field" placeholder="Phone No" required>
+                <input type="text" class="input-field" placeholder="Choose a valid user name" required>
                 <input type="password" class="input-field" placeholder="Password" required>
                 <input type="password" class="input-field" placeholder="Confirm Password" required>
                 <input type="checkbox" class="check-box" required><span id="agreeText">I agree to the terms and conditions.</span>
