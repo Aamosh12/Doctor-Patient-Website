@@ -22,12 +22,22 @@ if (isset($_POST['register-doctor'])) {
         $userid= $conn->query($select)->fetch_assoc()['id'];
         $sql = "INSERT INTO doctor VALUES ('$userid','$degree', '$specialization', '$nmc', '$experience')";
         if(!$conn->query($sql)){
-            die('Error: '.$conn->error);
+            die('Error: '.$conn->$error);
         }
     } else {
         echo "Error: " . $sql . "<br>";
     } 
     $conn->close();
+}
+if (isset($_POST['register-patient'])) {
+    $name = $_POST['pname'];
+    $email = $_POST['pemail'];
+    $address = $_POST['paddress'];
+    $phone = $_POST['pnum'];
+    $username = $_POST['pusername'];
+    $password = $_POST['ppassword'];
+    $user_sql = "INSERT INTO user VALUES ('', '$name', '$email', '$address', '$username', '$password', '$phone', '2' )";
+    $conn->query($user_sql);
 }
 ?>
 <div action="" id="register" class="input-group-register" method="post">
@@ -42,7 +52,7 @@ if (isset($_POST['register-doctor'])) {
     </div><br>
     <div id="scroll-form">
         <div id="field_doctor">
-            <form action="" id="register0" class="input-group-register0" method="post" onsubmit="return validate()">
+            <form action="" id="register0" class="input-group-register0" method="post" onsubmit="return validatedoc()">
                 <input type="text" class="input-field" placeholder="Name" name="dname" required>
                 <input type="email" class="input-field" placeholder="Email" name="demail" required>
                 <input type="text" class="input-field" placeholder="Address" name="daddress" required>
@@ -67,14 +77,15 @@ if (isset($_POST['register-doctor'])) {
             if doctor don't validate client and vice versa
          -->
         <div id="field_patient">
-            <form action="" id="register2" class="input-group-register2" method="post">
-                <input type="text" class="input-field" placeholder="Name" required>
-                <input type="email" class="input-field" placeholder="Email" required>
-                <input type="text" class="input-field" placeholder="Address" required>
-                <input type="tel" class="input-field" placeholder="Phone No" required>
-                <input type="text" class="input-field" placeholder="Choose a valid user name" required>
-                <input type="password" class="input-field" placeholder="Password" required>
-                <input type="password" class="input-field" placeholder="Confirm Password" required>
+            <form action="" id="register2" class="input-group-register2" method="post" onsubmit="return validatepat()">
+                <input type="text" class="input-field" placeholder="Name" name="pname" required>
+                <input type="email" class="input-field" placeholder="Email" name="pemail" required>
+                <input type="text" class="input-field" placeholder="Address" name="paddress" required>
+                <input type="tel" class="input-field" placeholder="Phone No" name="pnum" required>
+                <input type="text" class="input-field" placeholder="Choose a valid user name" name="pusername" required>
+                <input type="password" class="input-field" placeholder="Password" name="ppassword" id="ppassword" required>
+                <input type="password" class="input-field" placeholder="Confirm Password" name="pcpassword" id="pcpassword" required>
+                <p id="password_match_error_patient" class="text-danger"></p>
                 <input type="checkbox" class="check-box" required><span id="agreeText">I agree to the terms and conditions.</span>
                 <button type="submit" class="submit-btn" name="register-patient">Register</button>
             </form>
@@ -82,12 +93,24 @@ if (isset($_POST['register-doctor'])) {
     </div>
 </div>
 <script>
-     function validate() {
+     function validatedoc() {
       var password = document.getElementById("dpassword").value;
       var confirmPassword = document.getElementById("dcpassword").value;
 
       if (password !== confirmPassword) {
         document.getElementById("password_match_error").textContent = "Passwords do not match!";
+        return false; // Return false to prevent form submission
+      }
+
+      // Passwords match, continue with form submission
+      return true;
+    }
+    function validatepat() {
+      var password = document.getElementById("ppassword").value;
+      var confirmPassword = document.getElementById("pcpassword").value;
+
+      if (password !== confirmPassword) {
+        document.getElementById("password_match_error_patient").textContent = "Passwords do not match!";
         return false; // Return false to prevent form submission
       }
 
