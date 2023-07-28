@@ -1,5 +1,7 @@
 <?php
 require './actions/Connection.php';
+date_default_timezone_set('Asia/Kathmandu'); // Set the time zone to Nepal (Asia/Kathmandu)
+$currentDateTime = date('Y-m-d H:i:s');
 
 if (isset($_POST['register-doctor'])) {
     $name = $_POST['dname'];
@@ -15,7 +17,7 @@ if (isset($_POST['register-doctor'])) {
     $dcpassword = $_POST['dcpassword'];
     $confirm = false;
     
-    $user_sql = "INSERT INTO user VALUES ('', '$name', '$email', '$address', '$username', '$password', '$phone', '1' )";
+    $user_sql = "INSERT INTO user VALUES ('', '$name', '$email', '$address', '$username', '$password', '$phone', '1', '$currentDateTime')";
 
     if ($conn->query($user_sql) === TRUE) {
         $select = "SELECT id FROM user WHERE Username='$username'";
@@ -36,7 +38,7 @@ if (isset($_POST['register-patient'])) {
     $phone = $_POST['pnum'];
     $username = $_POST['pusername'];
     $password = $_POST['ppassword'];
-    $user_sql = "INSERT INTO user VALUES ('', '$name', '$email', '$address', '$username', '$password', '$phone', '2' )";
+    $user_sql = "INSERT INTO user VALUES ('', '$name', '$email', '$address', '$username', '$password', '$phone', '2', '$currentDateTime')";
     $conn->query($user_sql);
 }
 ?>
@@ -82,7 +84,8 @@ if (isset($_POST['register-patient'])) {
                 <input type="email" class="input-field" placeholder="Email" name="pemail" required>
                 <input type="text" class="input-field" placeholder="Address" name="paddress" required>
                 <input type="tel" class="input-field" placeholder="Phone No" name="pnum" required>
-                <input type="text" class="input-field" placeholder="Choose a valid user name" name="pusername" required>
+                <input type="text" class="input-field" placeholder="Choose a valid user name" name="pusername" onkeyup="httpreques(this.value)" required>
+                <p id="userCheck"></p>
                 <input type="password" class="input-field" placeholder="Password" name="ppassword" id="ppassword" required>
                 <input type="password" class="input-field" placeholder="Confirm Password" name="pcpassword" id="pcpassword" required>
                 <p id="password_match_error_patient" class="text-danger"></p>
@@ -116,5 +119,20 @@ if (isset($_POST['register-patient'])) {
 
       // Passwords match, continue with form submission
       return true;
+    }
+    function httpreques(user){
+        console.log(user);
+        let request = new XMLHttpRequest();
+
+            request.open('GET', './index-content/usernameCheck.php?username='+user);
+            
+            request.onreadystatechange = function () {
+                if(request.status == 200 && request.readyState == 4)
+                {
+                    document.getElementById('userCheck').textContent = request.response;
+                }
+            }
+
+            request.send();
     }
 </script>
