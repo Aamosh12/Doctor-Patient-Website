@@ -15,14 +15,14 @@ if (isset($_POST['register-doctor'])) {
     $experience = $_POST['experience'];
     $password = $_POST['dpassword'];
     $dcpassword = $_POST['dcpassword'];
-    $confirm = false;
+    $isverified = false;
     
     $user_sql = "INSERT INTO user VALUES ('', '$name', '$email', '$address', '$username', '$password', '$phone', '1', '$currentDateTime')";
 
     if ($conn->query($user_sql) === TRUE) {
         $select = "SELECT id FROM user WHERE Username='$username'";
         $userid= $conn->query($select)->fetch_assoc()['id'];
-        $sql = "INSERT INTO doctor VALUES ('$userid','$degree', '$specialization', '$nmc', '$experience')";
+        $sql = "INSERT INTO doctor VALUES ('$userid','$degree', '$specialization', '$nmc', '$experience', '$isverified')";
         if(!$conn->query($sql)){
             die('Error: '.$conn->$error);
         }
