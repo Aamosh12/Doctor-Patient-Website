@@ -10,9 +10,9 @@ require './actions/Connection.php';
         $user= $conn->query($sql);
         if($user->num_rows > 0){
             $user = $user->fetch_assoc();
-            $_SESSION['username'] = $user['username'];
+            $_SESSION['username'] = $user['Username'];
             $_SESSION['role']= $user['Role_id'];
-            $_SESSION['name']=$user['name'];
+            $_SESSION['name']=$user['Name'];
             if($user['Role_id'] == 1){
             header('location: ./pages/docdashboard.php');
             }
