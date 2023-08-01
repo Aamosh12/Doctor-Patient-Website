@@ -60,11 +60,11 @@ $result = $conn->query($sql_select);
         <div class="sidebar-menu">
             <ul>
                 <li>
-                    <a href=""><i class="fa-solid fa-igloo"></i>
+                    <a href="../admdashboard.php"><i class="fa-solid fa-igloo"></i>
                         <span>Dashboard</span></a>
                 </li>
                 <li>
-                    <a href=""><i class="fa-solid fa-user-group"></i>
+                    <a href="./patient.php"><i class="fa-solid fa-user-group"></i>
                         <span>Patients</span></a>
                 </li>
                 <li><a href="" class="active"><i class="fa-solid fa-user-doctor"></i>
@@ -123,7 +123,6 @@ $result = $conn->query($sql_select);
                         </thead>
                         <tbody>
                             <?php
-                            $role = [1 => 'Doctor', 2 => 'Patient'];
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
                                     $isVerified = $row['IsVerified'];
@@ -144,7 +143,7 @@ $result = $conn->query($sql_select);
                                                     else {
                                                         echo "<button class='disableVerify' disabled>Verified</button>";
                                                     }
-                                                    echo "<button class='editDel' onclick='confirmation($row[Id])'>Delete</button>
+                                                    echo "<button class='editDel' type='button' onclick='confirmation($row[Id])'>Delete</button>
                                                     </td>
                                                 </tr>";
                                 }
