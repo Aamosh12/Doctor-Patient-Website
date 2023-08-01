@@ -121,7 +121,6 @@ if (isset($_POST['register-patient'])) {
       return true;
     }
     function httpreques(user){
-        console.log(user);
         let request = new XMLHttpRequest();
 
             request.open('GET', './index-content/usernameCheck.php?username='+user);
