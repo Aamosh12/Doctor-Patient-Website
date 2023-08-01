@@ -10,6 +10,7 @@ require './actions/Connection.php';
         $user= $conn->query($sql);
         if($user->num_rows > 0){
             $user = $user->fetch_assoc();
+            $_SESSION['id'] =  $user['Id'];
             $_SESSION['username'] = $user['Username'];
             $_SESSION['role']= $user['Role_id'];
             $_SESSION['name']=$user['Name'];
