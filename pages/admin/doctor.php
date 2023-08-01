@@ -85,22 +85,6 @@ $result = $conn->query($sql_select);
         include 'header.php';
         ?>
         <main>
-            <div class="doctor-form">
-                <h1>Add New Doctor</h1>
-                <form action="">
-                    <input type="text" class="input-field" placeholder="Name" name="dname" required>
-                    <input type="email" class="input-field" placeholder="Email" name="demail" required>
-                    <input type="text" class="input-field" placeholder="Address" name="daddress" required>
-                    <input type="tel" class="input-field" placeholder="Phone Number" name="dphone" required>
-                    <input type="text" class="input-field" placeholder="Username" name="dusername" required>
-                    <input type="text" class="input-field" placeholder="Your Degree Here" name="degree" required>
-                    <input type="text" class="input-field" placeholder="Specialization" name="spec" required>
-                    <input type="tel" class="input-field" placeholder="NMC No." name="nmc" required>
-                    <input type="text" class="input-field" placeholder="Experience here" name="experience" required>
-                    <input type="password" class="input-field" placeholder="Password" name="dpassword" id="dpassword" required>
-                    <button type="submit" class="submit-btn" name="register-doctor" value="register-doctor">Register</button>
-                </form>
-            </div>
             <div class="table">
                 <div class="table_header">
                     <h3>Total Doctors : <?php echo getTotalDoctors(); ?></h3><form action="./verifyDoctor.php" method="post"><button id='verifyDoc' type="submit" name="submit">Verify</button>
