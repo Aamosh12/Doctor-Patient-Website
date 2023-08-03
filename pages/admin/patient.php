@@ -4,7 +4,24 @@ require '../../actions/Connection.php';
 if (!isset($_SESSION["role"])) {
     header("location: ../../index.php");
     exit();
+    
 }
+elseif($_SESSION["role"] != 3){
+    header("location: ../../index.php");
+    exit();
+}
+function getTotalPatients()
+{
+    global $conn;
+    $sql = "SELECT COUNT(*) as total_users FROM user WHERE role_id = 2";
+    $totaluser = $conn->query($sql);
+    if ($totaluser->num_rows > 0) {
+        $user = $totaluser->fetch_assoc();
+        return $user['total_users'];
+    }
+}
+$sql_select = "SELECT * FROM user WHERE Role_id = 2";
+$result = $conn->query($sql_select);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +55,7 @@ if (!isset($_SESSION["role"])) {
                         <span>Doctors</span></a>
                 </li>
                 <li>
-                    <a href=""><i class="fa-solid fa-file-invoice"></i>
+                    <a href="./report.php"><i class="fa-solid fa-file-invoice"></i>
                         <span>Reports</span></a>
                 </li>
                 <li>
@@ -52,8 +69,75 @@ if (!isset($_SESSION["role"])) {
         include 'header.php';
         ?>
         <main>
+        <div class="table">
+                <div class="table_header">
+                    <h3>Total Patient : <?php echo getTotalPatients(); ?></h3>
+                </div>
+                <div class="table_section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr>
+                                                    <td>$row[Id]</td>
+                                                    <td>$row[Name]</td>
+                                                    <td>$row[Address]</td>
+                                                    <td>$row[Email]</td>
+                                                    <td>$row[Phone_Number]</td>
+                                                    <td>";
+                                                    echo "<button class='editDel' type='button' onclick='confirmation($row[Id])'>Delete</button>
+                                                    </td>
+                                                </tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='9'>No data found</td></tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                    </form>
+                </div>
+            </div>
         </main>
     </div>
+    <script>
+        if (window.history.replaceState)
+        {
+            window.history.replaceState(null, null, window.location.href);
+        }
+        function confirmation(userId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "delete_pat.php?id=" + userId;
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
