@@ -6,6 +6,11 @@ require '../../actions/Connection.php';
 if (!isset($_SESSION["role"])) {
     header("location: ../../index.php");
     exit();
+    
+}
+elseif($_SESSION["role"] != 3){
+    header("location: ../../index.php");
+    exit();
 }
 if (isset($_SESSION['verification_success']) && $_SESSION['verification_success']) {
     unset($_SESSION['verification_success']); // Unset the session variable to avoid showing the SweetAlert again on page refresh
@@ -71,7 +76,7 @@ $result = $conn->query($sql_select);
                         <span>Doctors</span></a>
                 </li>
                 <li>
-                    <a href=""><i class="fa-solid fa-file-invoice"></i>
+                    <a href="./report.php"><i class="fa-solid fa-file-invoice"></i>
                         <span>Reports</span></a>
                 </li>
                 <li>
