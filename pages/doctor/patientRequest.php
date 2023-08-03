@@ -1,0 +1,173 @@
+<?php
+session_start();
+require '../../actions/Connection.php';
+if (!isset($_SESSION["role"])) {
+    header("location: ../../index.php");
+    exit();
+    
+}
+elseif($_SESSION["role"] != 1){
+    header("location: ../../index.php");
+    exit();
+}
+$id = $_SESSION['id'];
+$sql = "SELECT * FROM appointments a INNER JOIN user u on a.User_id= u.id WHERE Doctor_id= $id AND status = 'pending'";
+$result = $conn->query($sql);
+$id = "SELECT ID, Time FROM appointments WHERE Doctor_id= $id AND status = 'pending'";
+$id_result = $conn->query($id);
+function getTotslAppointment()
+{
+    global $conn;
+    global $id;
+    $sql = "SELECT COUNT(*) as total_users FROM appointments WHERE Doctor_id= $id AND status = 'pending'";
+    $totaluser = $conn->query($sql);
+    if ($totaluser->num_rows > 0) {
+        $user = $totaluser->fetch_assoc();
+        return $user['total_users'];
+    }
+}
+if (isset($_SESSION['status']) && $_SESSION['status']) {
+    unset($_SESSION['status']);
+    // Show the SweetAlert
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Accepted',
+                text: 'Appointment is accepted successfully!',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+    </script>";
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareConnect</title>
+    <link rel="stylesheet" href="../../style/doctorReq.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div class="sidebar">
+            <div class="sidebar-brand">
+                <h2>CareConnect</h2>
+            </div>
+            <hr>
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="../docdashboard.php"><i class="fa-solid fa-house"></i>
+                            <span>Dashboard</span></a>
+                    </li>
+                    <li><a href="./patientRequest.php" class="active"><i class="fa-solid fa-user-doctor"></i>
+                            <span>Patient's Request</span></a>
+                    </li>
+                    <li>
+                        <a href="./appointment.php"><i class="fa-solid fa-book-open-reader"></i>
+                            <span>Appointments</span></a>
+                    </li>
+                    <li>
+                        <a href="./logout.php"><i class="fa-solid fa-right-from-bracket"></i> <span>Log Out</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-content">
+            <?php
+            include './header.php';
+            ?>
+            <main>
+                <h2>Total Request : <?php echo getTotslAppointment(); ?></h2>
+                <div class="recent-grid">
+                    <div class="doctor">
+                        <div class="card">
+                            <div class="table">
+                                <!-- <div class="table_header">
+                                <h3></h3> 
+                            </div> -->
+                                <div class="table_section">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Patient Name</th>
+                                                <th>Current Address</th>
+                                                <th>Problem</th>
+                                                <th>Time</th>
+                                                <th>Date</th>
+                                                <th>Action</th>
+                                                <!-- <th></th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    $id = $id_result->fetch_assoc();
+                                                    echo "<tr>
+                                                    <td>$row[Name]</td>
+                                                    <td>$row[Current_Address]</td>
+                                                    <td>$row[Problem]</td>
+                                                    <td>$id[Time]</td>
+                                                    <td>$row[Date]</td>
+                                                    <td>
+                                                    <form method='post' action='./acceptReq.php'>
+                                                    <button class='editDel' type='submit' name='accept'>Accept</button>
+                                                    <button class='reject' type='button' name='reject' onclick='confirmation($id[ID])'>Reject</button>
+                                                    <input type='hidden' name='appointmentId' value='" . htmlspecialchars($id['ID']) . "'>
+                                                    </form>
+                                                    </td>
+                                                </tr>";
+                                                }
+                                            } else {
+                                                echo "<tr><td colspan='6'>You have no request</td></tr>";
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+
+        function confirmation(userId) {
+            console.log(userId)
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Please make sure Once this action is taken, it will be irreversible.!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, reject this request!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "reject.php?id=" + userId;
+                    Swal.fire(
+                        'Rejected!',
+                        'Appointment request is rejected successfully.',
+                        'success'
+                    )
+                }
+            })
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>
