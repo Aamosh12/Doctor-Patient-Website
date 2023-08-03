@@ -22,5 +22,9 @@ if (isset($_POST['submit']) || isset($_POST['submitSolo'])){
             echo "Error verifying doctors: ";
         }
     }
+    else{
+        
+        header('location: ./doctor.php');
+    }
 }
 ?>
