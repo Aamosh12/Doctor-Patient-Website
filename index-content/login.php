@@ -1,5 +1,4 @@
 <?php
-session_start();
 require './actions/Connection.php';
 
     if(isset($_POST['login'])){
@@ -33,7 +32,7 @@ require './actions/Connection.php';
 <div id="loginDiv">
     <div id="login-form">
         <div id="xmark" onclick="hideLogin()"></div>
-        <i class="fa-regular fa-xmark" id="cross" onclick="hideLogin()"></i>
+        <i class="fa-solid fa-xmark" id="cross" onclick="hideLogin()"></i>
         <div class="button-form">
             <div id="btn"></div>
             <button type="button" onclick="login()" class="top-btn">Log In</button>
