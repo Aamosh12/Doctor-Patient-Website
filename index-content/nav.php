@@ -18,7 +18,7 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Contact Us</a>
         </li>
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">
             Dropdown
           </a>
@@ -28,7 +28,7 @@
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
-        </li>
+        </li> -->
       </ul>
         <button class="btn btn-outline" type="button" id="index-login"  onclick="showLogin()"><i class="bi bi-person-circle" id="user-icon" style="margin-bottom: 5px">      </i>Login</button>
     </div>
