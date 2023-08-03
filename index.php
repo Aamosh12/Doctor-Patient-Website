@@ -1,3 +1,7 @@
+<?php
+require './registervalidation/doctorValidatemsg.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,6 +57,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="./scripts/login.js"></script>
     <script src="https://kit.fontawesome.com/2c695f0152.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
