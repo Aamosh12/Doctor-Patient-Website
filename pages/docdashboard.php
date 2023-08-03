@@ -2,9 +2,25 @@
 session_start();
 require '../actions/Connection.php';
 if (!isset($_SESSION["role"])) {
-    header("location: ../index.php");
-    exit();
+       header("location: ../index.php");
+       exit();
+} elseif ($_SESSION["role"] != 1) {
+       header("location: ../index.php");
+       exit();
 }
+$id = $_SESSION['id'];
+$sql = "SELECT u.*, d.* FROM user u 
+        INNER JOIN doctor d ON u.id = d.User_id 
+        WHERE u.id = $id";
+
+$result = $conn->query($sql);
+
+// Step 3: Fetch and print the data in HTML format
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+       $finalname = $row['Name'];
+       $specialization = $row['Specialization'];
+    }} 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +55,7 @@ if (!isset($_SESSION["role"])) {
                                                  <span>Appointments</span></a>
                                    </li>
                                    <li>
-                                          <a href="./patient/logout.php"><i class="fa-solid fa-right-from-bracket"></i> <span>Log Out</span></a>
+                                          <a href="./doctor/logout.php"><i class="fa-solid fa-right-from-bracket"></i> <span>Log Out</span></a>
                                    </li>
                             </ul>
                      </div>
@@ -49,7 +65,20 @@ if (!isset($_SESSION["role"])) {
                      include './patient/header.php';
                      ?>
                      <main>
-                          
+                            <div class="welcome-section">
+                                   <h1>Welcome, Dr.  <?php echo $finalname ?>!</h1>
+                                   <p class="specialization">Specialization: <?php echo $specialization ?></p>
+                            </div>
+
+                            <div class="motivational-quotes">
+                                   <h2>Motivational Quotes</h2>
+                                   <div class="quote-card">
+                                          <p>"The art of medicine consists of amusing the patient while nature cures the disease." - Voltaire</p>
+                                   </div>
+                                   <div class="quote-card">
+                                          <p>"The best doctors are not those who prescribe the most, but those who care the most." - Anonymous</p>
+                                   </div>
+                            </div>
                      </main>
               </div>
        </div>
