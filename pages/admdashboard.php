@@ -6,6 +6,11 @@ require '../actions/Connection.php';
 if (!isset($_SESSION["role"])) {
     header("location: ../index.php");
     exit();
+    
+}
+elseif($_SESSION["role"] != 3){
+    header("location: ../index.php");
+    exit();
 }
 
 function getTotalDoctors()
@@ -28,7 +33,18 @@ function getTotalPatients()
         return $user['total_users'];
     }
 }
-$sql_select = "SELECT * FROM user WHERE Role_id <> 3 ORDER BY Time DESC;";
+function getTotalAppointmentsCount() {
+    global $conn;
+    $sql2 = "SELECT COUNT(*) AS total_appointments FROM appointments";
+
+    // Execute the query
+    $result2 = $conn->query($sql2);
+    // Fetch the result and extract the total count
+    $row1 = $result2->fetch_assoc();
+    $totalAppointments = $row1['total_appointments'];
+    return $totalAppointments;
+}
+$sql_select = "SELECT * FROM user WHERE Role_id <> 3 ORDER BY Time DESC LIMIT 5;";
 $result = $conn->query($sql_select);
 ?>
 
@@ -65,7 +81,7 @@ $result = $conn->query($sql_select);
                         <span>Doctors</span></a>
                 </li>
                 <li>
-                    <a href=""><i class="fa-solid fa-file-invoice"></i>
+                    <a href="./admin/report.php"><i class="fa-solid fa-file-invoice"></i>
                         <span>Reports</span></a>
                 </li>
                 <li>
@@ -106,7 +122,7 @@ $result = $conn->query($sql_select);
                 </div>
                 <div class="card-single">
                     <div>
-                        <h1>4</h1>
+                        <h1><?php echo getTotalAppointmentsCount(); ?></h1>
                         <span>Appointments</span>
                     </div>
                     <div><span class="las la-calendar-check"></span></div>
