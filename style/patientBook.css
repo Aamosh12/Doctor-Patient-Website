@@ -1,0 +1,156 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+:root {
+    --main-bg-color: #009d63;
+    --main-text-color: #009d63;
+    --second-text-color: #bbbec5;
+    --second-bg-color: #c1efde;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+}
+#wrapper {
+    overflow-x: hidden;
+    background-image: linear-gradient(
+      to right,
+      #baf3d7,
+      #c2f5de,
+      #cbf7e4,
+      #d4f8ea,
+      #ddfaef
+    );
+    min-height: 100vh;
+  }
+
+.sidebar {
+  width: 250px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: #fff;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  height: 90px;
+  padding: 1rem 0rem 1rem 1.5rem;
+  color: var(--main-bg-color);
+  font-size: 21px;
+}
+hr {
+  border: 1px solid #bbbec5;
+  margin: -15px auto 20px;
+}
+.sidebar-menu li {
+  width: 100%;
+  margin-bottom: 1.3rem;
+  padding-left: 1rem;
+}
+.sidebar-menu a {
+  color: #847c7c;
+  padding-left: 1rem;
+  display: block;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.sidebar-menu a.active {
+  color: var(--main-bg-color);
+
+}
+.main-content{
+    margin-left: 260px;
+    justify-content: space-between;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;  
+    top: 0;
+    font-size: 1.5rem;
+}
+header .user{
+    font-size: 1rem;
+}
+main {
+    padding: 0.5rem 1.5rem;
+}
+.form-text{
+    text-align: center;
+    margin: 0 0 40px 0;
+}
+.form-text h1 span img{
+    margin: 0 10px;
+
+}
+.form-text h1{
+    color: #211b1b;
+    font-family: 'Akaya Telivigala', cursive;
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+.form-text p{
+    color: #272626;
+    font-family: 'Akaya Telivigala', cursive;
+    font-size: large;
+}
+
+.main-form div{
+    margin: 10px 10px;
+    width: 300px;
+    display: inline-block;
+}
+.main-form div input,textarea {
+    width: 100%;
+    font-family: 'Akaya Telivigala', cursive;
+    background: none;
+    border: 1px solid #ffca00;;
+    font-size: 15px;
+    outline: none;
+    padding: 3px 0 3px 10px;
+    margin-top: 10px;
+}
+.main-form div select{
+    width: 104%;
+    font-family: 'Akaya Telivigala', cursive;
+    background: none;
+    border: 1px solid #ffca00;;
+    font-size: 15px;
+    outline: none;
+    padding: 3px 0 3px 10px;
+    margin-top: 10px;
+}
+.main-form div span{
+    width: 100%;
+    font-family: 'Akaya Telivigala', cursive;
+    font-size: 15px;
+}
+
+#submit{
+    width: 100%;
+    text-align: center;
+}
+#submit input{
+    font-family: 'Akaya Telivigala', cursive;
+    width: 200px;
+    color: black !important;
+    transition: all .3s;
+}
+#submit input:hover{
+    font-family: 'Akaya Telivigala', cursive;
+    width: 200px;
+    color: #fff !important;
+}
+
+@media screen and (max-width:710px) {
+    .main-form{
+        text-align: center;
+    }
+}
