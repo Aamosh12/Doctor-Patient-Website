@@ -51,7 +51,7 @@ if ($result->num_rows > 0) {
                                                  <span>Patient's Request</span></a>
                                    </li>
                                    <li>
-                                          <a href=""><i class="fa-solid fa-book-open-reader"></i>
+                                          <a href="./doctor/appointment.php"><i class="fa-solid fa-book-open-reader"></i>
                                                  <span>Appointments</span></a>
                                    </li>
                                    <li>
@@ -62,7 +62,7 @@ if ($result->num_rows > 0) {
               </div>
               <div class="main-content">
                      <?php
-                     include './patient/header.php';
+                     include './doctor/header.php';
                      ?>
                      <main>
                             <div class="welcome-section">
