@@ -1,5 +1,4 @@
 <?php
-session_start();
 if (isset($_SESSION['mandatory']) ) {
     unset($_SESSION['mandatory']); // Unset the session variable to avoid showing the SweetAlert again on page refresh
     // Show the SweetAlert
