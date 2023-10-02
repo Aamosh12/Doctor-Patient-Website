@@ -7,14 +7,12 @@ $result = $conn->query($sql_select);
 if (!isset($_SESSION["role"])) {
     header("location: ../../index.php");
     exit();
-    
-}
-elseif($_SESSION["role"] != 2){
+} elseif ($_SESSION["role"] != 2) {
     header("location: ../../index.php");
     exit();
 }
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     $userId = $_SESSION['id'];
     $phoneNumber = $_POST['number'];
     $currentAddress = $_POST['address'];
@@ -80,8 +78,12 @@ if(isset($_POST['submit'])){
                         <h1><span><img src="../../images/art.png" alt=""></span> Book Now <span><img src="../../images/art.png" alt=""></span></h1>
                         <p>Your health is your greatest wealth. Partner with us to prioritize your well-being.</p>
                     </div>
+                    <div id="error-message" style="color: red; display: none; text-align: center;">
+                        <span id="error-text"></span>
+                        <span id="close-error" style="cursor: pointer; float: right; margin-right: 90px;">&times;</span>
+                    </div>
                     <div class="main-form">
-                        <form action="" method="post">
+                        <form action="" method="post" onsubmit="return validateForm()">
                             <div>
                                 <span>Please enter your active phone number</span>
                                 <input type="tel" name="number" id="pnumber" placeholder="Write your active phone number here..." required>
@@ -131,8 +133,7 @@ if(isset($_POST['submit'])){
         </div>
     </div>
     <script>
-        if (window.history.replaceState)
-        {
+        if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }
         // Get references to the specialization and doctor select elements
@@ -155,7 +156,7 @@ if(isset($_POST['submit'])){
                         doctorsData.forEach((doctor) => {
                             console.log(doctor.id)
                             const option = document.createElement("option");
-                            option.value = doctor.id; 
+                            option.value = doctor.id;
                             option.textContent = doctor.doctor_name;
                             doctorSelect.appendChild(option);
                         });
@@ -175,6 +176,83 @@ if(isset($_POST['submit'])){
             const selectedSpecialization = specializationSelect.value;
             fetchDoctorsBySpecialization(selectedSpecialization);
         });
+
+        function toggleErrorMessage(show) {
+            var errorMessageDiv = document.getElementById("error-message");
+            errorMessageDiv.style.display = show ? "block" : "none";
+        }
+
+        // Function to set and clear error messages
+        function setErrorText(text) {
+            var errorText = document.getElementById("error-text");
+            errorText.innerHTML = text;
+        }
+
+        // Function to clear error messages
+        function clearErrorText() {
+            setErrorText("");
+        }
+
+        // Function to handle the close button click
+        document.getElementById("close-error").addEventListener("click", function() {
+            toggleErrorMessage(false);
+            clearErrorText();
+        });
+
+        function validateForm() {
+            var phoneNumber = document.getElementById("pnumber").value;
+            var address = document.getElementById("address").value;
+            var time = document.getElementById("time").value;
+            var date = new Date(document.getElementById("date").value);
+            var specialist = document.getElementById("specialist").value;
+            var doctor = document.getElementById("doctor").value;
+            var problem = document.getElementById("problem").value;
+
+            // Error message element
+            var errorMessageDiv = document.getElementById("error-message");
+
+            // Function to display error message
+            function showError(message) {
+                setErrorText(message);
+                toggleErrorMessage(true);
+            }
+
+            if (!phoneNumber || !address || !time || !date || !specialist || !doctor || !problem) {
+                showError("Please fill in all fields.");
+                return false;
+            }
+
+            if (!/^(98|97)\d{8}$/.test(phoneNumber)) {
+                showError("Please enter a valid phone number starting with '98' or '97' and having 10 digits.");
+                return false;
+            }
+
+            if (!/^[a-zA-Z0-9\s-]*[a-zA-Z][a-zA-Z0-9\s-]*$/.test(address)) {
+                showError("Please enter a valid address with at least one letter and no more than one symbol.");
+                return false;
+            }
+
+            if (!/^(1[0-2]|0?[1-9]):[0-5][0-9] [ap]m$/i.test(time)) {
+                showError("Please enter a valid time in the format of '12:00 am' or '12:00 pm'.");
+                return false;
+            }
+
+            var currentDate = new Date();
+            if (date <= currentDate) {
+                showError("Please select a date in the future.");
+                return false;
+            }
+
+            if (problem.length < 10 || problem.length > 500) {
+                showError("Please provide a problem description between 10 and 500 characters.");
+                return false;
+            }
+
+            clearErrorText();
+            toggleErrorMessage(false);
+
+            return true;
+        }
     </script>
 
 </body>
