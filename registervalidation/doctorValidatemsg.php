@@ -45,15 +45,15 @@ elseif (isset($_SESSION['addressPattern']) ) {
     </script>";
 }
 elseif (isset($_SESSION['usernamePattern']) ) {
-    unset($_SESSION['usernamePattern']); // Unset the session variable to avoid showing the SweetAlert again on page refresh
+    unset($_SESSION['usernamePattern']); 
+    // Unset the session variable to avoid showing the SweetAlert again on page refresh
     // Show the SweetAlert
     echo "<script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 icon: 'error',
         title: 'Oops...',
-        text: 'Kindly note that the 'User Name' field should only consist of text characters or can be followed by numbers, without any special symbols, or spaces.',
-                showConfirmButton: false,
+        text: 'Kindly note that the \'User Name\' field should only consist of text characters or can be followed by numbers, without any special symbols, or spaces.',                showConfirmButton: false,
                 timer: 2000
             });
         });
@@ -123,22 +123,24 @@ elseif (isset($_SESSION['registerValidate']) ) {
     unset($_SESSION['registerValidate']); // Unset the session variable to avoid showing the SweetAlert again on page refresh
     // Show the SweetAlert
     echo "<script>
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
-      
-      Toast.fire({
-        icon: 'success',
-        title: 'Registered successfully'
-      })
+    document.addEventListener('DOMContentLoaded', function() {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+    
+        Toast.fire({
+            icon: 'success',
+            title: 'Registered successfully'
+        });
+    });    
     </script>";
 }
 ?>
