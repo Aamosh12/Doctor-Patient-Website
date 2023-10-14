@@ -11,3 +11,4 @@ else
 {
     echo 'Username available';
 }
+?>
