@@ -10,6 +10,7 @@ include './docregistercheck.php';
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="./style/login.css">
+  <script src="./scripts/docregistervalidate.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login </title>
@@ -58,7 +59,11 @@ include './docregistercheck.php';
         </div>
         <div class="signup-form">
           <div class="title">Signup</div>
-          <form action="" method="post">
+          <div id="error-message" style="color: red; text-align: center; display: none;">
+            <span id="error-text"></span>
+            <span id="close-error" style="cursor: pointer; float: right;">&times;</span>
+          </div>
+          <form action="" method="post" onsubmit="return validateForm()" name="myForm">
             <div id="form1">
               <div class="input-boxes">
                 <div class="input-box">
@@ -67,8 +72,9 @@ include './docregistercheck.php';
                 </div>
                 <div class="input-box">
                   <i class="fas fa-envelope"></i>
-                  <input type="email" placeholder="Enter your email" name="email" required>
+                  <input type="email" placeholder="Enter your email" name="email" onkeyup="emailCheck(this.value)" autocomplete="off" required>
                 </div>
+                <p id="emailCheck"></p>
                 <div class="input-box">
                   <i class="fas fa-map-marked"></i>
                   <input type="text" placeholder="Enter your Address" name="address" required>
@@ -122,8 +128,9 @@ include './docregistercheck.php';
               <div class="input-boxes">
                 <div class="input-box">
                   <i class="fas fa-user"></i>
-                  <input type="text" placeholder="Enter suitable username" name="username" required>
+                  <input type="text" placeholder="Enter suitable username" name="username" id="username" autocomplete="off" onkeyup="usernameCheck(this.value)" required>
                 </div>
+                <p id="userCheck"></p>
                 <div class="input-box">
                   <i class="fas fa-lock"></i>
                   <input type="password" placeholder="Enter Password" name="password" required>
@@ -187,6 +194,38 @@ include './docregistercheck.php';
       Form3.style.display = "block";
       Form4.style.display = "none";
       // Update progress here if needed
+    }
+    document.getElementById("close-error").addEventListener("click", function() {
+      toggleErrorMessage(false);
+      clearErrorText();
+    });
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, window.location.href);
+    }
+
+    function usernameCheck(user) {
+      let request = new XMLHttpRequest();
+      request.open('GET', './index-content/usercheckDoc.php?username=' + user);
+
+      request.onreadystatechange = function() {
+        if (request.status == 200 && request.readyState == 4) {
+          document.getElementById('userCheck').textContent = request.response;
+        }
+      }
+
+      request.send();
+    }
+    function emailCheck(value) {
+      let request = new XMLHttpRequest();
+      request.open('GET', './index-content/email.php?email=' + value);
+
+      request.onreadystatechange = function() {
+        if (request.status == 200 && request.readyState == 4) {
+          document.getElementById('emailCheck').textContent = request.response;
+        }
+      }
+
+      request.send();
     }
   </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
