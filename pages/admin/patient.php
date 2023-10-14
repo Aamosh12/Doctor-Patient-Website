@@ -10,6 +10,20 @@ elseif($_SESSION["role"] != 3){
     header("location: ../../index.php");
     exit();
 }
+if (isset($_SESSION['deleteUser'])) {
+    // Display the success message
+    echo "<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire(
+            'Deleted!',
+            'Patient has been deleted.',
+            'success'
+        );
+    });
+    </script>";
+    // Unset the session variable
+    unset($_SESSION['deleteUser']);
+}
 function getTotalPatients()
 {
     global $conn;
@@ -31,6 +45,7 @@ $result = $conn->query($sql_select);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient | CareConnect</title>
     <link rel="stylesheet" href="../../style/adminPatient.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -128,16 +143,10 @@ $result = $conn->query($sql_select);
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = "delete_pat.php?id=" + userId;
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
                 }
             })
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
