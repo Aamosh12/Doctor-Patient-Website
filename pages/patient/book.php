@@ -11,7 +11,36 @@ if (!isset($_SESSION["role"])) {
     header("location: ../../index.php");
     exit();
 }
-
+if (isset($_SESSION['book'])) {
+    unset($_SESSION['book']); // Unset the session variable to avoid showing the SweetAlert again on page refresh
+    // Show the SweetAlert
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+        title: 'Congratulation',
+        text: 'You have successfully booked your Appointment',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+    </script>";
+}
+if (isset($_SESSION['notBook'])) {
+    unset($_SESSION['notBook']); // Unset the session variable to avoid showing the SweetAlert again on page refresh
+    // Show the SweetAlert
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+        title: 'Oops...',
+        text: 'You have already booked your appointment on that day',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+    </script>";
+}
 if (isset($_POST['submit'])) {
     $userId = $_SESSION['id'];
     $phoneNumber = $_POST['number'];
@@ -21,8 +50,21 @@ if (isset($_POST['submit'])) {
     $specialization = $_POST['specialist'];
     $selectedDoctor = $_POST['doctor'];
     $problem = $_POST['problem'];
-    $user_sql = "INSERT INTO appointments VALUES ('', '$userId', '$selectedDoctor', '$problem', '$phoneNumber', '$currentAddress', '$time', '$date', 'Pending')";
-    $conn->query($user_sql);
+    $check_sql = "SELECT * FROM appointments WHERE user_id = '$userId' AND time = '$time' AND date = '$date'";
+    $result = $conn->query($check_sql);
+
+    if ($result->num_rows == 0) {
+        // No existing appointment found, so insert the new appointment
+        $user_sql = "INSERT INTO appointments VALUES ('', '$userId', '$selectedDoctor', '$problem', '$phoneNumber', '$currentAddress', '$time', '$date', 'Pending')";
+        if ($conn->query($user_sql)) {
+            $_SESSION['book'] = true;
+        } else {
+            echo "Error: " . $conn->error;
+        }
+    } else {
+        $_SESSION['notBook'] = true;
+    }
+    header('location: book.php');
 }
 
 ?>
@@ -254,6 +296,7 @@ if (isset($_POST['submit'])) {
             return true;
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 
