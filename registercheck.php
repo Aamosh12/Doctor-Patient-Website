@@ -16,18 +16,16 @@ if (isset($_POST['register-patient'])) {
     } else {
         // Text validation for the name (letters followed by optional numbers)
         $namePattern = '/^[A-Za-z\s]+$/';
-        $usernamePattern = '/^[A-Za-z]+(?:\s+\d+)*$/';
+        $addressPattern = '/^[A-Za-z\s\d]+$/';
+        $usernamePattern = '/^(?=.*[a-zA-Z])\w*$/';
         if (!preg_match($namePattern, $name)) {
             $_SESSION['namepattern'] = true;
-            echo "<script>console.log(" . $_SESSION['namepattern'] . ")</script>";
-            // Handle invalid name input (e.g., display an error message).
-        } elseif (!preg_match($usernamePattern, $address)) {
+        } elseif (!preg_match($addressPattern, $address)) {
             $_SESSION['addressPattern'] = true;
         } elseif (!preg_match($usernamePattern, $username)) {
             $_SESSION['usernamePattern'] = true;
-            // } elseif (!preg_match($namePattern, $food)) {
-            //     $_SESSION['foodPattern'] = true;
-            // 
+        } elseif (!preg_match($namePattern, $food)) {
+            $_SESSION['foodPattern'] = true;
         } else {
             // Email validation
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -50,4 +48,3 @@ if (isset($_POST['register-patient'])) {
     $conn->close();
     header('Location: ./loginpat.php');
 }
-?>
