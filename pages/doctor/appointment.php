@@ -4,14 +4,12 @@ require '../../actions/Connection.php';
 if (!isset($_SESSION["role"])) {
     header("location: ../../index.php");
     exit();
-    
-}
-elseif($_SESSION["role"] != 1){
+} elseif ($_SESSION["role"] != 1) {
     header("location: ../../index.php");
     exit();
 }
 $id = $_SESSION['id'];
-$sql = "SELECT * FROM appointments a INNER JOIN user u on a.User_id= u.id WHERE Doctor_id= $id AND status <> 'pending'";
+$sql = "SELECT * FROM appointments a INNER JOIN user u on a.User_id= u.id WHERE Doctor_id= $id AND status <> 'pending'  AND status <> 'rejected'";
 $result = $conn->query($sql);
 $i = "SELECT ID, Time FROM appointments WHERE Doctor_id= $id AND status <> 'pending'";
 $id_result = $conn->query($i);
@@ -19,12 +17,41 @@ function getTotslAppointment()
 {
     global $conn;
     global $id;
-    $sql = "SELECT COUNT(*) as total_users FROM appointments WHERE Doctor_id= $id AND status <> 'pending'";
+    $sql = "SELECT COUNT(*) as total_users FROM appointments WHERE Doctor_id= $id AND status <> 'pending'  AND status <> 'rejected'";
     $totaluser = $conn->query($sql);
     if ($totaluser->num_rows > 0) {
         $user = $totaluser->fetch_assoc();
         return $user['total_users'];
     }
+}
+if (isset($_SESSION['error_message'])) {
+    $errorMessage = $_SESSION['error_message'];
+    echo '<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                icon: "error",
+                title: "Error!",
+                text: "' . $errorMessage . '",
+                confirmButtonText: "OK"
+            });
+        });
+    </script>';
+    // Unset the session variable to clear the message
+    unset($_SESSION['error_message']);
+}
+if (isset($_SESSION['endBook'])) {
+    echo '<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                icon: "Success",
+                title: "Congratulation",
+                text: "You have successfully finished your appointment",
+                confirmButtonText: "OK"
+            });
+        });
+    </script>';
+    // Unset the session variable to clear the message
+    unset($_SESSION['endBook']);
 }
 ?>
 <!DOCTYPE html>
@@ -70,10 +97,13 @@ function getTotslAppointment()
             include './header.php';
             ?>
             <main>
-                <h2>Total Appointments : <?php echo getTotslAppointment()?></h2>
+                <h2>Total Appointments : <?php echo getTotslAppointment() ?></h2>
                 <div class="recent-grid">
                     <div class="doctor">
                         <div class="card">
+                            <?php
+                            include './endForm.php';
+                            ?>
                             <div class="table">
                                 <!-- <div class="table_header">
                                 <h3></h3> 
@@ -93,11 +123,11 @@ function getTotslAppointment()
                                         </thead>
                                         <tbody>
                                             <?php
-                                           if ($result->num_rows > 0) {
-                                            while ($row = $result->fetch_assoc()) {
-                                                $id = $id_result->fetch_assoc();
-                                                $status= $row['status'];
-                                                echo "<tr>
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    $id = $id_result->fetch_assoc();
+                                                    $status = $row['status'];
+                                                    echo "<tr>
                                                 <td>$row[Name]</td>
                                                 <td>$row[Current_Address]</td>
                                                 <td>$row[Active_phone]</td>
@@ -105,20 +135,19 @@ function getTotslAppointment()
                                                 <td>$id[Time]</td>
                                                 <td>$row[Date]</td>
                                                 <td>";
-                                                if($status == 'accepted'){
-                                                echo "<button class='editDel' type='button' name='Start' id='start' onclick='startAppointment($id[ID])'>Start</button>";
-                                                }
-                                                elseif($status == 'Ongoing'){
-                                                    echo "<button class='reject' type='button' name='Finish' id='finish' onclick='endAppointment($id[ID])'>Finish</button>";
-                                                }else{
-                                                    echo "<button class='success' type='button' name='success' id='success' disabled>Succeed</button>";
-                                                }
-                                                echo "</td>
+                                                    if ($status == 'Accepted') {
+                                                        echo "<button class='editDel' type='button' name='Start' id='start' onclick='startAppointment($id[ID])'>Start</button>";
+                                                    } elseif ($status == 'Ongoing') {
+                                                        echo "<button class='reject' type='button' name='Finish' id='finish' onclick='finishAppointment($id[ID])'>Finish</button>";
+                                                    } elseif ($status == 'Success') {
+                                                        echo "<button class='success' type='button' name='success' id='success' disabled>Succeed</button>";
+                                                    }
+                                                    echo "</td>
                                             </tr>";
+                                                }
+                                            } else {
+                                                echo "<tr><td colspan='7'>Sorry, You have no appointments to attend</td></tr>";
                                             }
-                                        } else {
-                                            echo "<tr><td colspan='7'>Sorry, You have no appointments to attend</td></tr>";
-                                        }
                                             ?>
                                         </tbody>
                                     </table>
@@ -134,11 +163,39 @@ function getTotslAppointment()
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }
-        function startAppointment(userid){
+
+        function startAppointment(userid) {
             window.location.href = "startappointment.php?id=" + userid;
         }
-        function endAppointment(userid){
+
+        function endAppointment(userid) {
             window.location.href = "endappointment.php?id=" + userid;
+        }
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("finish");
+        var span = document.getElementsByClassName("close")[0];
+
+        // btn.onclick = function() {
+        //     // get id 
+        //     modal.style.display = "block";
+        // }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function finishAppointment(id){
+            var appointmentField = document.getElementById("appointmentId");
+            //set id on form as hidden
+            appointmentField.value=id;
+            modal.style.display = "block";
+            
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
