@@ -17,10 +17,64 @@ $result = $conn->query($sql);
 
 // Step 3: Fetch and print the data in HTML format
 if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-       $finalname = $row['Name'];
-       $specialization = $row['Specialization'];
-    }} 
+       while ($row = $result->fetch_assoc()) {
+              $finalname = $row['Name'];
+              $specialization = $row['Specialization'];
+       }
+}
+if (isset($_SESSION['update'])) {
+       unset($_SESSION['update']);
+       echo '<script>
+       document.addEventListener("DOMContentLoaded", function() {
+           const Toast = Swal.mixin({
+               toast: true,
+               position: "top-end",
+               showConfirmButton: false,
+               timer: 3000,
+               timerProgressBar: true,
+               didOpen: (toast) => {
+                   toast.addEventListener("mouseenter", Swal.stopTimer);
+                   toast.addEventListener("mouseleave", Swal.resumeTimer);
+               }
+           });
+
+           Toast.fire({
+               icon: "success",
+               title: "Your profile has been Updated"
+           });
+       });
+       </script>';
+}
+function showPending(){
+       global $conn;
+       $id = $_SESSION['id'];
+       $getPendings = "SELECT count(*) AS totalPending FROM appointments WHERE Doctor_id=$id AND status='pending'";
+       $result2 = $conn->query($getPendings);
+       $row1 = $result2->fetch_assoc();
+       $totalPending = $row1['totalPending'];
+       return $totalPending;
+   
+}
+function showAppointment(){
+       global $conn;
+       $id = $_SESSION['id'];
+       $getPendings = "SELECT count(*) AS totalPending FROM appointments WHERE Doctor_id=$id AND status <> 'pending' AND status <> 'rejected'";
+       $result2 = $conn->query($getPendings);
+       $row1 = $result2->fetch_assoc();
+       $totalPending = $row1['totalPending'];
+       return $totalPending;
+   
+}
+function showsuccessAppointment(){
+       global $conn;
+       $id = $_SESSION['id'];
+       $getPendings = "SELECT count(*) AS totalPending FROM appointments WHERE Doctor_id=$id AND status='success'";
+       $result2 = $conn->query($getPendings);
+       $row1 = $result2->fetch_assoc();
+       $totalPending = $row1['totalPending'];
+       return $totalPending;
+   
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,8 +120,34 @@ if ($result->num_rows > 0) {
                      ?>
                      <main>
                             <div class="welcome-section">
-                                   <h1>Welcome, Dr.  <?php echo $finalname ?>!</h1>
+                                   <h1>Welcome, Dr. <?php echo $finalname ?>!</h1>
                                    <p class="specialization">Specialization: <?php echo $specialization ?></p>
+                            </div>
+                            <div class="cards">
+                                   <div class="card-single">
+                                          <div>
+                                                 <h1><?php echo showPending()?></h1>
+                                                 <span>Total Requests &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                 <button class="btn info" onclick="gotoNextpage('./doctor/patientRequest.php')">View Details</button>
+                                          </div>
+                                          <div><span class="las la-users"></span></div>
+                                   </div>
+                                   <div class="card-single">
+                                          <div>
+                                                 <h1><?php echo showAppointment()?></h1>
+                                                 <span>Total Appointments</span>
+                                                 <button class="btn info" onclick="gotoNextpage('./doctor/appointment.php')">View Details</button>
+                                          </div>
+                                          <div><span class="las la-users"></span></div>
+                                   </div>
+                                   <div class="card-single">
+                                          <div>
+                                                 <h1><?php echo showsuccessAppointment()?></h1>
+                                                 <span>Successfull Appointments</span>
+                                                 <button class="btn info">View Details</button>
+                                          </div>
+                                          <div><span class="las la-calendar-check"></span></div>
+                                   </div>
                             </div>
 
                             <div class="motivational-quotes">
@@ -82,6 +162,12 @@ if ($result->num_rows > 0) {
                      </main>
               </div>
        </div>
+       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+       <script>
+              function gotoNextpage(URL){
+                     window.location.href = URL;
+              }
+       </script>
 </body>
 
 </html>
