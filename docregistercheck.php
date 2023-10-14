@@ -17,17 +17,18 @@ if (isset($_POST['register-doctor'])) {
     $password = $_POST['password'];
     $cpassword = $_POST['cpassword'];
     $food = $_POST['food'];
-    $isverified = false;
+    $isverified = false; 
     if ($name == "" || $email == "" || $phone == "" || $username == "" || $address == "" || $degree == "" || $specialization == "" || $nmc == "" || $experience == "" || $food == "") {
         $_SESSION['mandatory'] = true;
     } else {
         // Text validation for the name (letters followed by optional numbers)
         $namePattern = '/^[A-Za-z\s]+$/';
-        $usernamePattern = '/^[A-Za-z\s\d]+$/';
+        $addressPattern = '/^(?=.*[a-zA-Z])\w*$/';
+        $usernamePattern = '/^(?=.*[a-zA-Z])\w*$/';
         if (!preg_match($namePattern, $name)) {
             $_SESSION['namepattern'] = true;
             // Handle invalid name input (e.g., display an error message).
-        } elseif (!preg_match($usernamePattern, $address)) {
+        } elseif (!preg_match($addressPattern, $address)) {
             $_SESSION['addressPattern'] = true;
         } elseif (!preg_match($usernamePattern, $username)) {
             $_SESSION['usernamePattern'] = true;
@@ -68,7 +69,9 @@ if (isset($_POST['register-doctor'])) {
                     }
                 }
             }
-        
+            
+            
+
     
     $conn->close();
     header('Location: ./logindoc.php');
