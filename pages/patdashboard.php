@@ -8,6 +8,68 @@ if (!isset($_SESSION["role"])) {
        header("location: ../index.php");
        exit();
 }
+if (isset($_SESSION['update'])) {
+       unset($_SESSION['update']);
+       echo '<script>
+       document.addEventListener("DOMContentLoaded", function() {
+           const Toast = Swal.mixin({
+               toast: true,
+               position: "top-end",
+               showConfirmButton: false,
+               timer: 3000,
+               timerProgressBar: true,
+               didOpen: (toast) => {
+                   toast.addEventListener("mouseenter", Swal.stopTimer);
+                   toast.addEventListener("mouseleave", Swal.resumeTimer);
+               }
+           });
+
+           Toast.fire({
+               icon: "success",
+               title: "Your profile has been Updated"
+           });
+       });
+       </script>';
+}
+function showPending()
+{
+       global $conn;
+       $id = $_SESSION['id'];
+       $getPendings = "SELECT count(*) AS totalPending FROM appointments WHERE User_id=$id AND status='pending'";
+       $result2 = $conn->query($getPendings);
+       $row1 = $result2->fetch_assoc();
+       $totalPending = $row1['totalPending'];
+       return $totalPending;
+}
+function showAppointment()
+{
+       global $conn;
+       $id = $_SESSION['id'];
+       $getAppointments = "SELECT count(*) AS totalappointment FROM appointments WHERE User_id=$id AND status<>'pending' AND status<>'rejected'";
+       $result2 = $conn->query($getAppointments);
+       $row1 = $result2->fetch_assoc();
+       $totalAppointment = $row1['totalappointment'];
+       return $totalAppointment;
+}
+function showsuccessAppointment()
+{
+       global $conn;
+       $id = $_SESSION['id'];
+       $getAppointments = "SELECT count(*) AS totalappointment FROM appointments WHERE User_id=$id AND status='success'";
+       $result2 = $conn->query($getAppointments);
+       $row1 = $result2->fetch_assoc();
+       $totalAppointment = $row1['totalappointment'];
+       return $totalAppointment;
+}
+function verfiedDoctor()
+{
+       global $conn;
+       $totalDoctor = "SELECT count(*) AS totalDoctor FROM doctor WHERE IsVerified=true";
+       $result2 = $conn->query($totalDoctor);
+       $row1 = $result2->fetch_assoc();
+       $doctor = $row1['totalDoctor'];
+       return $doctor;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,6 +122,43 @@ if (!isset($_SESSION["role"])) {
                                    <h1>Welcome, Patient!</h1>
                                    <p class="motivational-quote">"Your health is your most valuable asset. Take care of it and cherish it."</p>
                                    <p class="wishes">Wishing you better health and a speedy recovery!</p>
+                                   <h1>Hurry Up</h1>
+                                   <span>Book Your appointment now</span>
+                                   <button class="btn info" onclick="gotoNextpage('./patient/book.php')"> Book Now</button>
+                            </div>
+                            <div class="cards">
+                                   <div class="card-single">
+                                          <div>
+                                                 <h1><?php echo verfiedDoctor() ?></h1>
+                                                 <span>Total Verified Doctor &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                 <button class="btn info" onclick="gotoNextpage('./patient/doctor.php')">View All</button>
+                                          </div>
+                                          <div><span class="las la-users"></span></div>
+                                   </div>
+                                   <div class="card-single">
+                                          <div>
+                                                 <h1><?php echo showPending() ?></h1>
+                                                 <span>Your Total Requests</span>
+                                                 <button class="btn info" onclick="gotoNextpage('./patient/appointments.php')">View Details</button>
+                                          </div>
+                                          <div><span class="las la-users"></span></div>
+                                   </div>
+                                   <div class="card-single">
+                                          <div>
+                                                 <h1><?php echo showAppointment() ?></h1>
+                                                 <span>Total Appointments</span>
+                                                 <button class="btn info" onclick="gotoNextpage('./patient/appointments.php')">View Details</button>
+                                          </div>
+                                          <div><span class="las la-users"></span></div>
+                                   </div>
+                                   <div class="card-single">
+                                          <div>
+                                                 <h1><?php echo showsuccessAppointment() ?></h1>
+                                                 <span>Successful Appointments</span>
+                                                 <button class="btn info">View Details</button>
+                                          </div>
+                                          <div><span class="las la-calendar-check"></span></div>
+                                   </div>
                             </div>
 
                             <div class="health-tips-section">
@@ -109,6 +208,12 @@ if (!isset($_SESSION["role"])) {
                      </main>
               </div>
        </div>
+       <script>
+              function gotoNextpage(URL) {
+                     window.location.href = URL;
+              }
+       </script>
+       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
