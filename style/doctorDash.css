@@ -4,6 +4,9 @@
     --main-text-color: #009d63;
     --second-text-color: #bbbec5;
     --second-bg-color: #c1efde;
+    --main-color: #DD2F6E;
+    --color-dark: #1D2231;
+    --text-grey: #8390A2;
 }
 
 * {
@@ -69,18 +72,65 @@ hr {
     justify-content: space-between;
 }
 
-header{
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;  
-    top: 0;
-    font-size: 1.5rem;
-}
-header .user{
-    font-size: 1rem;
-}
 main {
     padding: 2rem 1.5rem;
+    margin-top: 10px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2rem;
+  margin-top: 1rem;
+}
+
+.card-single {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+}
+.card-single div span{
+  font-size: 1.2rem;
+}
+.cards-single div:last-child span{
+  font-size: 4rem;
+  color: var(--main-color);
+}
+.card-single div:first-child span{
+  color: var(--text-grey);
+}
+/* .card-single:last-child{
+  background: var(--main-color);
+} */
+.card-single:last-child div:last-child span {
+  color: #fff;
+}
+.card-single:last-child div:first-child span {
+      color: #6f6d6d;
+}
+.cards, .recent-grid{
+  flex: 1;
+  padding: 10px;
+}
+.btn {
+  border: 2px solid black;
+  background-color: white;
+  color: black;
+  padding: 10px 22px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 3ms;
+  border-radius: 5px;
+}
+.info {
+  border-color: #2196F3;
+  color: dodgerblue
+}
+
+.info:hover {
+  background: #2196F3;
+  color: white;
 }
 .welcome-section {
   text-align: center;

@@ -1,0 +1,195 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  --grey: #f4f2ff;
+  --dark-grey: #b7b7b7;
+
+  --green: #23ae00;
+  --light-green: #bdffac;
+
+  --red: #fe2727;
+  --light-red: #ffd2d2;
+
+  --blue: #277ffe;
+  --light-blue: #b6c6ff;
+  --dark-blue: #1368e3;
+
+  --bs: #aecfff;
+  --text: #9b9b9b;
+}
+
+a {
+  color: var(--blue);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--dark-blue);
+}
+
+body {
+  background: var(--light-blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  top: 50px;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 40%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #809680;
+  color: white;
+}
+
+.modal-body {
+  padding: 20px 16px;
+}
+
+form {
+  width: 100%;
+  padding: 28px;
+  border-radius: 12px;
+  background: #fff;
+  position: absolute;
+  top: 20%;
+  transition: all 0.3s ease;
+  transition-delay: 0s;
+  opacity: 1;
+}
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.form-group {
+  margin-bottom: 14px;
+}
+.form-group label {
+  display: inline-block;
+  margin-bottom: 4px;
+}
+.input-group {
+  width: 100%;
+  position: relative;
+}
+.input-group input {
+  padding: 12px 40px 12px 20px;
+  outline: none;
+  border-radius: 6px;
+  border: 1px solid var(--dark-grey);
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.input-group input:focus:valid {
+  box-shadow: 0 0 0 4px var(--light-green);
+}
+
+.input-group i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  color: var(--text);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+.form-group .help-text {
+  font-size: 12px;
+  color: var(--text);
+}
+.btn-submit {
+  padding: 12px 0;
+  display: block;
+  width: 100%;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-weight: 500;
+  background: var(--blue);
+  margin-bottom: 20px;
+}
+.btn-submit:hover {
+  background: var(--dark-blue);
+}

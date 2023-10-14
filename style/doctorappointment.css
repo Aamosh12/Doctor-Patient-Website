@@ -97,8 +97,8 @@ main {
     color: #000000;
   }
   .table_section{
-    height: 200px;
-    overflow: auto;
+    height: 450px;
+    /* overflow: hidden; */
   }
   table{
     width: 100%;
@@ -141,7 +141,7 @@ main {
     padding: 6px;
     color: #ffffff;
     margin-right: 10px;
-    background-color: #847c7c;
+    background-color: #D71313;
   }
   .success{
     outline: none;
@@ -158,11 +158,6 @@ main {
   }
   td button:nth-child(2){
     background-color: #f80000;
-  }
-  tr:hover td{
-    color: var(--main-text-color);
-    cursor: pointer;
-    /* background-color: #f6f9fc; */
   }
   ::-webkit-scrollbar{
     height: 5px;

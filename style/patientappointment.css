@@ -103,7 +103,7 @@ main {
   table{
     width: 100%;
     /* table-layout: fixed; */
-    min-width: 950px;
+    min-width: 1000px;
     border-collapse: collapse;
     
   }
@@ -116,7 +116,7 @@ main {
   }
   th, td{
     border-bottom: 1px solid #dddddd;
-    padding: 10px 20px;
+    padding: 10px 5px;
     word-break: break-all;
     text-align: center;
   }
@@ -150,11 +150,6 @@ main {
   }
   td button:nth-child(2){
     background-color: #f80000;
-  }
-  tr:hover td{
-    color: var(--main-text-color);
-    cursor: pointer;
-    /* background-color: #f6f9fc; */
   }
   ::-webkit-scrollbar{
     height: 5px;

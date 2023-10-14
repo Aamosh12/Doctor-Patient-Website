@@ -97,6 +97,10 @@ body{
   width: 100%;
   background: #fff;
 }
+#close-error {
+  font-size: 24px;
+  font-weight: bold;
+}
 .container .form-content{
   display: flex;
   align-items: center;

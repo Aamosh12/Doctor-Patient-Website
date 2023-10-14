@@ -85,6 +85,7 @@ main {
 .form-text{
     text-align: center;
     margin: 0 0 40px 0;
+    margin-bottom: 10px;
 }
 .form-text h1 span img{
     margin: 0 10px;
@@ -147,6 +148,10 @@ main {
     font-family: 'Akaya Telivigala', cursive;
     width: 200px;
     color: #fff !important;
+}
+#close-error {
+    font-size: 24px;
+    font-weight: bold;
 }
 
 @media screen and (max-width:710px) {
