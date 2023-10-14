@@ -1,4 +1,5 @@
 <?php
+session_start();
 require '../../actions/Connection.php';
 if (isset($_GET['id'])) {
     $userId = $_GET['id'];
@@ -7,7 +8,8 @@ if (isset($_GET['id'])) {
         $resultUser = $conn->query($deleteUserQuery);
 
     if ($resultUser) {
-        header("Location: patient.php"); // Replace "index.php" with the path of your main page
+        $_SESSION['deleteUser'] = true;
+        header("Location: patient.php");
         exit();
     } else {
         echo "Error deleting user";
