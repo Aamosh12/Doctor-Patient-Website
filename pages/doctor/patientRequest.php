@@ -4,9 +4,7 @@ require '../../actions/Connection.php';
 if (!isset($_SESSION["role"])) {
     header("location: ../../index.php");
     exit();
-    
-}
-elseif($_SESSION["role"] != 1){
+} elseif ($_SESSION["role"] != 1) {
     header("location: ../../index.php");
     exit();
 }
@@ -41,6 +39,31 @@ if (isset($_SESSION['status']) && $_SESSION['status']) {
         });
     </script>";
 }
+if (isset($_SESSION['timeup'])) {
+    unset($_SESSION['timeup']);
+    // Show the SweetAlert
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Accepted',
+                text: 'Time has been Change and Appointment is accepted successfully!',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+    </script>";
+}
+if (isset($_POST['change'])) {
+    $time = $_POST['time'];
+    $appointmentId = $_POST['appointmentId'];
+    $updateQuery = "UPDATE appointments SET Time='$time' WHERE ID=$appointmentId";
+    $action = $conn->query($updateQuery);
+    $sql = "UPDATE appointments SET status = 'Accepted' WHERE ID = $appointmentId";
+    $action = $conn->query($sql);
+    header('location: ./patientrequest.php');
+    $_SESSION['timeup'] = true;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +74,7 @@ if (isset($_SESSION['status']) && $_SESSION['status']) {
     <title>CareConnect</title>
     <link rel="stylesheet" href="../../style/doctorReq.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -85,6 +108,26 @@ if (isset($_SESSION['status']) && $_SESSION['status']) {
             include './header.php';
             ?>
             <main>
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="close" style="margin-top: -8px;">&times;</span>
+                            <h3>Please enter your eligible time</h3>
+                        </div>
+                        <form action="" id="changeTime" method="post" onsubmit="return validatetime()">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="hidden" id="appointmentId" name="appointmentId">
+                                        <input type="text" name="time" id="time" placeholder="Your Time as 03:10 am" autocomplete="off">
+                                        <i class="fa-solid fa-clock"></i>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-submit" name="change">Change</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <h2>Total Request : <?php echo getTotslAppointment(); ?></h2>
                 <div class="recent-grid">
                     <div class="doctor">
@@ -121,6 +164,7 @@ if (isset($_SESSION['status']) && $_SESSION['status']) {
                                                     <form method='post' action='./acceptReq.php'>
                                                     <button class='editDel' type='submit' name='accept'>Accept</button>
                                                     <button class='reject' type='button' name='reject' onclick='confirmation($id[ID])'>Reject</button>
+                                                    <button class='editTime' type='button' name='edit'  onclick='display($id[ID])'>Change Time</button>
                                                     <input type='hidden' name='appointmentId' value='" . htmlspecialchars($id['ID']) . "'>
                                                     </form>
                                                     </td>
@@ -145,6 +189,7 @@ if (isset($_SESSION['status']) && $_SESSION['status']) {
             window.history.replaceState(null, null, window.location.href);
         }
 
+
         function confirmation(userId) {
             console.log(userId)
             Swal.fire({
@@ -166,6 +211,69 @@ if (isset($_SESSION['status']) && $_SESSION['status']) {
                 }
             })
         }
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("myBtn");
+        var span = document.getElementsByClassName("close")[0];
+
+        function display(ID) {
+            modal.style.display = "block";
+            var appointment = document.getElementById('appointmentId');
+            appointment.value = ID;
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function validatetime() {
+            // Get the input value
+            var timeInput = document.getElementById("time").value;
+
+            // Define the regular expression pattern for time validation
+            var timePattern = /^(1[0-2]|0?[1-9]):[0-5][0-9] [ap]m$/i;
+
+            // Check if the input matches the pattern
+            if (!timePattern.test(timeInput)) {
+                // Display an error message using SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Time Format',
+                    text: 'Please enter a valid time in the format HH:MM am/pm',
+                    timer: 3000, // Optional, auto close the alert after 3 seconds
+                });
+
+                // Prevent the form from submitting
+                return false;
+            }
+
+            // If the input is valid, you can proceed with form submission
+            return true;
+        }
+
+        function addClickEventToElement(element, parameter) {
+            element.addEventListener('click', () => {
+                // You can use the 'parameter' here in your click event handler
+                alert(`Clicked with parameter: ${parameter}`);
+                // Replace the alert with your modal or any other action
+            });
+        }
+
+        // Usage example:
+        const addressCells = document.querySelectorAll('.address-cell');
+
+        addressCells.forEach((cell) => {
+            const address = cell.dataset.address;
+            addClickEventToElement(cell, address);
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
