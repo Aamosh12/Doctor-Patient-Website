@@ -5,8 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./style/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>CareConnect</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 <body>
@@ -98,7 +98,7 @@
       </div>
     </div>
   </section>
-  <section class="subscribe">
+  <!-- <section class="subscribe">
     <div class="section__container subscribe__container">
       <h2 class="section__header">Subscribe newsletter & get latest news</h2>
       <form class="subscribe__form">
@@ -106,7 +106,7 @@
         <button class="btn">Subscribe</button>
       </form>
     </div>
-  </section>
+  </section> -->
 
   <footer class="footer">
     <div class="section__container footer__container" id="contact">
@@ -134,10 +134,10 @@
     <div class="section__container footer__bar">
       <p>Copyright © 2023 CareConnect. All rights reserved.</p>
       <div class="socials">
-        <a href="https://www.facebook.com/"><i class="ri-facebook-fill"></i></a>
-        <a href="#"><i class="ri-twitter-fill"></i></a>
-        <a href="#"><i class="ri-instagram-line"></i></a>
-        <a href="#"><i class="ri-youtube-fill"></i></a>
+        <a href="https://www.facebook.com/"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
       </div>
     </div>
   </footer>
